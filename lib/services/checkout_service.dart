@@ -36,11 +36,15 @@ class CheckoutService {
       (itemsTotalAmount + shippingCost).toStringAsFixed(2),
     );
     final orderId = 'ORD-${DateTime.now().microsecondsSinceEpoch}';
+    final effectiveMpToken = (mercadoPagoAccessToken ?? '').trim().isNotEmpty
+        ? mercadoPagoAccessToken
+        : CheckoutService.mercadoPagoAccessToken;
+
     final paymentUrl = await _buildMercadoPagoUrl(
       orderId: orderId,
       productName: orderTitle,
       amount: totalAmount,
-      accessToken: mercadoPagoAccessToken,
+      accessToken: effectiveMpToken,
     );
 
     return CheckoutResult(
@@ -96,7 +100,13 @@ class CheckoutService {
             final elements = firstRow?['elements'] as List<dynamic>?;
             if (elements != null && elements.isNotEmpty) {
               final firstElement = elements.first as Map<String, dynamic>?;
-              final distance = firstElement?['distance']?['value'] as num?;
+              final distanceRaw = firstElement?['distance']?['value'];
+              double? distance;
+              if (distanceRaw is num) {
+                distance = distanceRaw.toDouble();
+              } else if (distanceRaw is String) {
+                distance = double.tryParse(distanceRaw.replaceAll(',', '.'));
+              }
               if (distance != null && distance > 0) {
                 return distance / 1000;
               }

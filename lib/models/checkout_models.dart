@@ -1,3 +1,24 @@
+double _parseDouble(dynamic v) {
+  if (v == null) return 0.0;
+  if (v is num) return v.toDouble();
+  if (v is String) {
+    return double.tryParse(v.replaceAll(',', '.')) ?? 0.0;
+  }
+  return 0.0;
+}
+
+int _parseInt(dynamic v) {
+  if (v == null) return 0;
+  if (v is int) return v;
+  if (v is num) return v.toInt();
+  if (v is String) {
+    return int.tryParse(v) ??
+        double.tryParse(v.replaceAll(',', '.'))?.toInt() ??
+        0;
+  }
+  return 0;
+}
+
 class StoreProduct {
   const StoreProduct({
     required this.id,
@@ -46,12 +67,9 @@ class StoreProduct {
     return StoreProduct(
       id: map['id']?.toString() ?? '',
       name: map['titulo']?.toString() ?? map['name']?.toString() ?? 'Producto',
-      price:
-          (map['precio'] as num?)?.toDouble() ??
-          (map['price'] as num?)?.toDouble() ??
-          0,
+      price: _parseDouble(map['precio'] ?? map['price']),
       description: map['description']?.toString() ?? '',
-      stock: (map['stock'] as num?)?.toInt() ?? 0,
+      stock: _parseInt(map['stock']),
       imageUrl: map['imageUrl']?.toString(),
     );
   }
@@ -75,7 +93,7 @@ class CartItem {
       product: StoreProduct.fromFirestoreMap(
         map['product'] as Map<String, dynamic>,
       ),
-      quantity: (map['quantity'] as num?)?.toInt() ?? 1,
+      quantity: _parseInt(map['quantity']),
     );
   }
 }
@@ -139,10 +157,10 @@ class CheckoutOrder {
     return CheckoutOrder(
       id: map['id']?.toString() ?? '',
       productName: map['productName']?.toString() ?? '',
-      productPrice: (map['productPrice'] as num?)?.toDouble() ?? 0,
-      distanceKm: (map['distanceKm'] as num?)?.toDouble() ?? 0,
-      shippingCost: (map['shippingCost'] as num?)?.toDouble() ?? 0,
-      totalAmount: (map['totalAmount'] as num?)?.toDouble() ?? 0,
+      productPrice: _parseDouble(map['productPrice']),
+      distanceKm: _parseDouble(map['distanceKm']),
+      shippingCost: _parseDouble(map['shippingCost']),
+      totalAmount: _parseDouble(map['totalAmount']),
       paymentUrl: map['paymentUrl']?.toString() ?? '',
       createdAt:
           DateTime.tryParse(map['createdAt']?.toString() ?? '') ??
