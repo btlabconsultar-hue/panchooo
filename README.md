@@ -133,17 +133,6 @@ Se tuvieron que revisar y ajustar permisos para que:
 - las lecturas de Firestore pudieran ejecutarse correctamente;
 - la app no se quedara bloqueada por errores de seguridad.
 
-### 4.6 Adaptación de JSON y manejo de errores
-
-Muchas respuestas de las APIs externas no llegaron en el formato exacto que se esperaba. Por eso fue necesario:
-
-- adaptar el parseo de JSON;
-- validar si los valores venían como `num` o como `String`;
-- manejar fallbacks cuando una API no estaba disponible;
-- corregir errores de runtime y de análisis.
-
-Este trabajo fue clave porque la IA ayudó a generar estructura y lógica, pero la solución final dependió de revisar los datos reales y ajustar el código para que funcionara correctamente.
-
 ## 5. Funcionalidades principales implementadas
 
 - Pantalla principal con productos.
@@ -164,6 +153,3 @@ Durante la implementación surgieron varios problemas que exigieron intervenció
 - errores de autenticación y permisos de administrador;
 - necesidad de corregir problemas de sincronización entre la UI y el estado global.
 
-## 7. Conclusión
-
-El proyecto logró pasar de una app deportiva base a una tienda online funcional con integración real a servicios externos. La arquitectura resultó adecuada para separar responsabilidades entre UI, estado, base de datos y servicios externos, y el desarrollo requirió trabajo técnico real más allá de generar código automáticamente: configuración de cuentas, obtención de credenciales, comprensión de documentación y adaptación de respuestas externas.
