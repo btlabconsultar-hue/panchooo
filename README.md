@@ -38,7 +38,6 @@ Firebase se utilizó para tres funciones principales:
 El proceso fue el siguiente:
 
 - se creó un proyecto en Firebase;
-- se registraron las aplicaciones Android/iOS/Web;
 - se generaron los archivos de configuración con `firebase_options.dart`;
 - se instalaron los paquetes correspondientes en `pubspec.yaml`;
 - se configuraron reglas de acceso para permitir lectura/escritura a los datos relevantes;
